@@ -30,7 +30,7 @@ function run(CLUSTER_ROLE) {
   .listen(common[CLUSTER_ROLE].port, () => _.dev(() => console.warn(`${CLUSTER_ROLE} listening on port ${common[CLUSTER_ROLE].port}.`)));
 }
 
-if(__DEV__ || true) {
+if(__DEV__) {
   console.warn('Running in DEVELOPMENT mode (single process-mode, debugging messages, runtime checks).');
   console.warn('Switch the NODE_ENV flag to \'production\' to enable multi-process mode and run optimized code.');
   Object.keys(workers).forEach(run);
