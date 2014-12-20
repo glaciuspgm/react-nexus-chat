@@ -5,28 +5,18 @@ var React = R.React;
 
 var ChatMessages = require("./ChatMessages");
 var ChatUsers = require("./ChatUsers");
+var ChatInput = require("./ChatInput");
 
 var ChatRoom = React.createClass({ displayName: "ChatRoom",
   mixins: [R.Component.Mixin],
 
   render: function () {
-    return React.createElement("div", { className: "ChatRoom" }, React.createElement("div", { className: "ChatRoom-ChatMessages" }, React.createElement(ChatMessages, null)), React.createElement("div", { className: "ChatRoom-ChatUsers" }, React.createElement(ChatUsers, null)));
+    return React.createElement("div", { className: "ChatRoom ui page grid" }, React.createElement("div", { className: "ChatRoom-Header row" }, React.createElement("div", { className: "column" }, React.createElement("h2", { className: "ui header" }, React.createElement("i", { className: "lab icon" }), React.createElement("div", { className: "content" }, "React Nexus Chat", React.createElement("div", { className: "sub header" }, "Because a little demo tells more than a big README."))))), React.createElement("div", { className: "row" }, React.createElement("div", { className: "ChatRoom-ChatMessages ten wide column" }, React.createElement(ChatMessages, null), React.createElement(ChatInput, null)), React.createElement("div", { className: "ChatRoom-ChatUsers three wide column" }, React.createElement(ChatUsers, null))));
   },
 
   statics: {
     styles: {
-      ".ChatRoom": {
-        width: "100%",
-        height: "100%" },
-
-      ".ChatRoom-ChatMessages, .ChatRoom-ChatUsers": {
-        display: "inline-block",
-        height: "100%" },
-
-      ".ChatRoom-ChatMessages": {
-        width: "70%" },
-
-      ".ChatRoom-ChatUsers": {
-        width: "30%" } } } });
+      ".ChatRoom-Header.row": {
+        marginTop: "1rem" } } } });
 
 module.exports = ChatRoom;

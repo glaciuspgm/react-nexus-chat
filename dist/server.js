@@ -40,7 +40,7 @@ function run(CLUSTER_ROLE) {
   });
 }
 
-if (__DEV__) {
+if (__DEV__ || true) {
   console.warn("Running in DEVELOPMENT mode (single process-mode, debugging messages, runtime checks).");
   console.warn("Switch the NODE_ENV flag to 'production' to enable multi-process mode and run optimized code.");
   Object.keys(workers).forEach(run);

@@ -7,14 +7,11 @@ var ChatUser = React.createClass({ displayName: "ChatUser",
   mixins: [R.Component.Mixin],
 
   propTypes: {
-    nickname: React.PropTypes.string.isRequired },
+    nickname: React.PropTypes.string.isRequired,
+    userId: React.PropTypes.string.isRequired },
 
   render: function () {
-    return React.createElement("div", { className: "ChatUser" }, this.props.nickname);
-  },
-
-  statics: {
-    styles: {}
+    return React.createElement("div", { className: "ChatUser item" }, React.createElement("img", { className: "ui avatar image", src: "http://api.adorable.io/avatars/" + this.props.userId }), React.createElement("div", { className: "content" }, React.createElement("a", { className: "header" }, this.props.nickname)));
   } });
 
 module.exports = ChatUser;

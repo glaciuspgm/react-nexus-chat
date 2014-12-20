@@ -21,8 +21,8 @@ module.exports = () => {
       app: express().use(cors()),
     });
 
-    const MESSAGE_LIST_MAX_LENGTH = 200;
-    const BATCH_REFRESH_INTERVAL = 100;
+    const { MESSAGE_LIST_MAX_LENGTH } = chatUtils;
+    const UPDATE_THROTTLE = 100;
     const userList = {};
     const messageList = [];
 
@@ -37,11 +37,26 @@ module.exports = () => {
       };
     }
 
+    function render() {
+      return {
+        '/userList': userList,
+        '/messageList': messageList,
+      };
+    }
+
+    function update() {
+      const store = render();
+      Object.keys(store).forEach((path) => uplink.update({ path, value: store[path] }));
+    }
+
+    setInterval(update, UPDATE_THROTTLE);
+
     function userJoin({ guid }) {
       guid.should.be.a.String;
       const defaultNickname = _.uniqueId('Anonymous');
       userList[chatUtils.userId(guid)] = defaultNickname;
       _.dev(() => console.log(`userList[${chatUtils.userId(guid)}] <- ${defaultNickname}`));
+      postMessage({ guid, message: `Hello, I'm ${defaultNickname}.`});
     }
 
     function userLeave({ guid }) {
@@ -65,27 +80,14 @@ module.exports = () => {
         key: chatUtils.messageId(),
         timestamp: Date.now(),
         nickname: userList[chatUtils.userId(guid)],
+        userId: chatUtils.userId(guid),
         message
       });
       _.dev(() => console.log(`userList[${chatUtils.userId(guid)}] -> ${message}`));
       while(messageList.length > MESSAGE_LIST_MAX_LENGTH) {
-        messageList.unshift();
+        messageList.shift();
       }
     }
-
-    function render() {
-      return {
-        '/userList': userList,
-        '/messageList': messageList,
-      };
-    }
-
-    function update() {
-      const store = render();
-      Object.keys(store).forEach((path) => uplink.update({ path, value: store[path] }));
-    }
-
-    setInterval(update, BATCH_REFRESH_INTERVAL);
 
     uplink.events.on('create', catchAll(userJoin));
     uplink.events.on('delete', catchAll(userLeave));

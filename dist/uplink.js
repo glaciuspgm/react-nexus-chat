@@ -17,8 +17,8 @@ module.exports = function () {
     activityTimeout: 2000,
     app: express().use(cors()) });
 
-  var MESSAGE_LIST_MAX_LENGTH = 200;
-  var BATCH_REFRESH_INTERVAL = 100;
+  var MESSAGE_LIST_MAX_LENGTH = chatUtils.MESSAGE_LIST_MAX_LENGTH;
+  var UPDATE_THROTTLE = 100;
   var userList = {};
   var messageList = [];
 
@@ -32,6 +32,21 @@ module.exports = function () {
     };
   }
 
+  function render() {
+    return {
+      "/userList": userList,
+      "/messageList": messageList };
+  }
+
+  function update() {
+    var store = render();
+    Object.keys(store).forEach(function (path) {
+      return uplink.update({ path: path, value: store[path] });
+    });
+  }
+
+  setInterval(update, UPDATE_THROTTLE);
+
   function userJoin(_ref) {
     var guid = _ref.guid;
     guid.should.be.a.String;
@@ -40,6 +55,7 @@ module.exports = function () {
     _.dev(function () {
       return console.log("userList[" + chatUtils.userId(guid) + "] <- " + defaultNickname);
     });
+    postMessage({ guid: guid, message: "Hello, I'm " + defaultNickname + "." });
   }
 
   function userLeave(_ref2) {
@@ -72,30 +88,16 @@ module.exports = function () {
       key: chatUtils.messageId(),
       timestamp: Date.now(),
       nickname: userList[chatUtils.userId(guid)],
+      userId: chatUtils.userId(guid),
       message: message
     });
     _.dev(function () {
       return console.log("userList[" + chatUtils.userId(guid) + "] -> " + message);
     });
     while (messageList.length > MESSAGE_LIST_MAX_LENGTH) {
-      messageList.unshift();
+      messageList.shift();
     }
   }
-
-  function render() {
-    return {
-      "/userList": userList,
-      "/messageList": messageList };
-  }
-
-  function update() {
-    var store = render();
-    Object.keys(store).forEach(function (path) {
-      return uplink.update({ path: path, value: store[path] });
-    });
-  }
-
-  setInterval(update, BATCH_REFRESH_INTERVAL);
 
   uplink.events.on("create", catchAll(userJoin));
   uplink.events.on("delete", catchAll(userLeave));

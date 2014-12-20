@@ -11,10 +11,8 @@ module.exports = ({ title, description, canonical, lang, rootHtml, serializedFlu
       ${description ? `<meta name="description" content="${X(description)}">` : ''}
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>${title || ""}</title>
+      <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.2.0/semantic.css">
       <link rel="stylesheet" type="text/css" href="/p${__DEV__ ? '': '.min'}.css">
-      <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-      <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
-      <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     </head>
     <body>
       <div id="__ReactNexusRoot">

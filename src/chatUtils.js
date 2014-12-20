@@ -8,4 +8,6 @@ module.exports = {
   messageId() {
     return _.uniqueId('message');
   },
+
+  MESSAGE_LIST_MAX_LENGTH: 15,
 };

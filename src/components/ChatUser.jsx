@@ -6,18 +6,16 @@ const ChatUser = React.createClass({
 
   propTypes: {
     nickname: React.PropTypes.string.isRequired,
+    userId: React.PropTypes.string.isRequired,
   },
 
   render() {
-    return <div className='ChatUser'>
-      {this.props.nickname}
+    return <div className='ChatUser item'>
+      <img className='ui avatar image' src={'http://api.adorable.io/avatars/' + this.props.userId} />
+      <div className='content'>
+        <a className='header'>{this.props.nickname}</a>
+      </div>
     </div>;
-  },
-
-  statics: {
-    styles: {
-
-    }
   },
 });
 

@@ -3,39 +3,40 @@ const React = R.React;
 
 const ChatMessages = require('./ChatMessages');
 const ChatUsers = require('./ChatUsers');
+const ChatInput = require('./ChatInput');
 
 const ChatRoom = React.createClass({
   mixins: [R.Component.Mixin],
 
   render() {
-    return <div className='ChatRoom'>
-      <div className='ChatRoom-ChatMessages'>
-        <ChatMessages />
+    return <div className='ChatRoom ui page grid'>
+      <div className='ChatRoom-Header row'>
+        <div className='column'>
+          <h2 className='ui header'>
+            <i className='lab icon' />
+            <div className='content'>
+              React Nexus Chat
+              <div className='sub header'>Because a little demo tells more than a big README.</div>
+            </div>
+          </h2>
+        </div>
       </div>
-      <div className='ChatRoom-ChatUsers'>
-        <ChatUsers />
+      <div className='row'>
+        <div className='ChatRoom-ChatMessages ten wide column'>
+          <ChatMessages />
+          <ChatInput />
+        </div>
+        <div className='ChatRoom-ChatUsers three wide column'>
+          <ChatUsers />
+        </div>
       </div>
     </div>;
   },
 
   statics: {
     styles: {
-      '.ChatRoom': {
-        width: '100%',
-        height: '100%',
-      },
-
-      '.ChatRoom-ChatMessages, .ChatRoom-ChatUsers': {
-        display: 'inline-block',
-        height: '100%',
-      },
-
-      '.ChatRoom-ChatMessages': {
-        width: '70%',
-      },
-
-      '.ChatRoom-ChatUsers': {
-        width: '30%',
+      '.ChatRoom-Header.row': {
+        marginTop: '1rem',
       },
     },
   },
