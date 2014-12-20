@@ -116,12 +116,8 @@ gulp.task('bundle', ['compile'], function() {
 });
 
 gulp.task('componentsCSS', ['compile'], function() {
-  return gulp.src('src/**/*.jsx', { base: '.' })
+  return gulp.src('dist/components/**/*.js')
   .pipe(plumber())
-  .pipe(rename(function(p) {
-    p.dirname = path.join(__dirname, p.dirname.replace(/^src/, 'dist'));
-    p.extname = ".js";
-  }))
   .pipe(style())
   .pipe(__DEV__ ? sourcemaps.init() : gutil.noop())
   .pipe(concat('c.css'))
@@ -164,7 +160,6 @@ gulp.task('pack', ['packJS', 'packCSS']);
 
 gulp.task('finalize', ['pack'], function(fn) {
   fn();
-  //del(['public/c.js', 'public/c.css', 'public/native.history.js'], fn);
 });
 
 gulp.task('default', ['finalize']);
