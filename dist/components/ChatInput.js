@@ -30,13 +30,13 @@ var ChatInput = React.createClass({ displayName: "ChatInput",
     if (nickname !== null) {
       this.dispatch("uplink://setNickname", { nickname: nickname });
     } else {
-      this.dispatch("uplink://setNickname", { message: message });
+      this.dispatch("uplink://postMessage", { message: message });
     }
     this.setState({ message: null });
   },
 
   render: function () {
-    return React.createElement("div", { className: "ChatInput" }, React.createElement("form", { onSubmit: this.submitForm }, React.createElement("div", { className: "ui fluid icon input" }, React.createElement("input", { type: "text", placeholder: "Type your message or /nick <nickname>...", onChange: this.updateMessage }), React.createElement("i", { className: "icon comment" }))));
+    return React.createElement("div", { className: "ChatInput" }, React.createElement("form", { onSubmit: this.submitForm }, React.createElement("div", { className: "ui fluid icon input" }, React.createElement("input", { type: "text", placeholder: "Type your message or /nick <nickname>...", onChange: this.updateMessage, value: this.state.message }), React.createElement("i", { className: "icon comment" }))));
   } });
 
 module.exports = ChatInput;

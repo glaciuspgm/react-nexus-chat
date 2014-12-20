@@ -1,4 +1,4 @@
-React Nexus Starterkit
-======================
+React Nexus Chat
+================
 
-Fork it, clone it, deploy it.
+Ultra simple chat build with [React Nexus Starterkit](https://github.com/elierotenberg/react-nexus-starterkit.git).

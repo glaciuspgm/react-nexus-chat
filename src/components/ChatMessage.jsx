@@ -28,6 +28,14 @@ const ChatMessage = React.createClass({
       </div>
     </div>;
   },
+
+  statics: {
+    styles: {
+      '.ChatMessage.item:last-child': {
+        paddingBottom: '0.3em',
+      },
+    },
+  },
 });
 
 module.exports = ChatMessage;

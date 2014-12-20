@@ -52,10 +52,10 @@
     "cors": "^2.5.2",
     "express": "^4.10.6",
     "http-exceptions": "^0.4.11",
-    "lodash-next": "^1.11.1",
+    "lodash-next": "^1.12.0",
     "nexus-router": "^0.3.13",
     "nexus-uplink-client": "^1.1.3",
-    "nexus-uplink-simple-server": "^1.2.1",
-    "react-nexus": "^1.0.0"
+    "nexus-uplink-simple-server": "^1.2.5",
+    "react-nexus": "^1.1.3"
   }
 }

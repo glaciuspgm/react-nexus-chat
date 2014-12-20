@@ -13,7 +13,7 @@ module.exports = function () {
     pid: _.guid("pid"),
     stores: ["/userList", "/messageList"],
     rooms: [],
-    actions: ["/postMessage"],
+    actions: ["/postMessage", "/setNickname"],
     activityTimeout: 2000,
     app: express().use(cors()) });
 
@@ -38,11 +38,16 @@ module.exports = function () {
       "/messageList": messageList };
   }
 
+  var prevHash = _.hash({});
   function update() {
-    var store = render();
-    Object.keys(store).forEach(function (path) {
-      return uplink.update({ path: path, value: store[path] });
-    });
+    var next = render();
+    var nextHash = _.hash(next);
+    if (nextHash !== prevHash) {
+      Object.keys(next).forEach(function (path) {
+        return uplink.update({ path: path, value: next[path] });
+      });
+    }
+    prevHash = nextHash;
   }
 
   setInterval(update, UPDATE_THROTTLE);

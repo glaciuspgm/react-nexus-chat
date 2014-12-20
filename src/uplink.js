@@ -16,6 +16,7 @@ module.exports = () => {
       rooms: [],
       actions: [
         '/postMessage',
+        '/setNickname',
       ],
       activityTimeout: 2000,
       app: express().use(cors()),
@@ -44,9 +45,14 @@ module.exports = () => {
       };
     }
 
+    let prevHash = _.hash({});
     function update() {
-      const store = render();
-      Object.keys(store).forEach((path) => uplink.update({ path, value: store[path] }));
+      const next = render();
+      const nextHash = _.hash(next);
+      if(nextHash !== prevHash) {
+        Object.keys(next).forEach((path) => uplink.update({ path, value: next[path] }));
+      }
+      prevHash = nextHash;
     }
 
     setInterval(update, UPDATE_THROTTLE);

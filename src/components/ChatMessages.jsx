@@ -2,6 +2,8 @@ const R = require('react-nexus');
 const React = R.React;
 
 const ChatMessage = require('./ChatMessage');
+const styles = require('../styles');
+const chatUtils = require('../chatUtils');
 
 const ChatMessages = React.createClass({
   mixins: [R.Component.Mixin],
@@ -18,6 +20,14 @@ const ChatMessages = React.createClass({
         <ChatMessage {...this.state.messages[k]} />
       ) : null }
     </div></div>;
+  },
+
+  statics: {
+    styles: {
+      '.ChatMessages': {
+        height: styles.dimensions.chatMessageHeight * chatUtils.MESSAGE_LIST_MAX_LENGTH,
+      },
+    },
   },
 });
 

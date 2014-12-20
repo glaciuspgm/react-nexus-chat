@@ -13,5 +13,4 @@ require("6to5/polyfill");var Promise = (global || window).Promise = require("lod
     OpenSans: "\"Open Sans\", sans-serif" },
 
   dimensions: {
-    pageWidth: 980 }
-};
+    chatMessageHeight: 33.593 + 3.599 } };

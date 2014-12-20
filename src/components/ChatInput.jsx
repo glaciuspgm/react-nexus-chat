@@ -30,7 +30,7 @@ const ChatInput = React.createClass({
       this.dispatch('uplink://setNickname', { nickname });
     }
     else {
-      this.dispatch('uplink://setNickname', { message });
+      this.dispatch('uplink://postMessage', { message });
     }
     this.setState({ message: null });
   },
@@ -39,7 +39,7 @@ const ChatInput = React.createClass({
     return <div className='ChatInput'>
       <form onSubmit={this.submitForm} >
         <div className='ui fluid icon input'>
-            <input type='text' placeholder='Type your message or /nick <nickname>...' onChange={this.updateMessage} />
+            <input type='text' placeholder='Type your message or /nick <nickname>...' onChange={this.updateMessage} value={this.state.message} />
             <i className='icon comment' />
         </div>
       </form>

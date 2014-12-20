@@ -4,9 +4,9 @@ require("6to5/polyfill");var Promise = (global || window).Promise = require("lod
   supportedLocales: ["en", "fr"],
 
   uplink: {
-    port: 8080,
-    url: "http://localhost:8080" },
+    port: 22080,
+    url: "http://localhost:22080" },
 
   render: {
-    port: 8000,
-    url: "http://localhost:8000" } };
+    port: 22000,
+    url: "http://localhost:22000" } };

@@ -13,6 +13,6 @@ module.exports = {
   },
 
   dimensions: {
-    pageWidth: 980,
-  }
+    chatMessageHeight: 33.593 + 3.599,
+  },
 };

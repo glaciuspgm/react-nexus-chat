@@ -22,6 +22,11 @@ var ChatMessage = React.createClass({ displayName: "ChatMessage",
 
   render: function () {
     return React.createElement("div", { className: "ChatMessage item" }, React.createElement("img", { className: "ui avatar image", src: "http://api.adorable.io/avatars/" + this.props.userId }), React.createElement("div", { className: "content" }, React.createElement("a", { className: "header" }, this.props.nickname, " (", this.getTime(), ")"), React.createElement("div", { className: "description" }, this.props.message)));
-  } });
+  },
+
+  statics: {
+    styles: {
+      ".ChatMessage.item:last-child": {
+        paddingBottom: "0.3em" } } } });
 
 module.exports = ChatMessage;
