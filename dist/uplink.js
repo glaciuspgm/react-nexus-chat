@@ -5,6 +5,8 @@ var _ = R._;
 var cors = require("cors");
 var express = require("express");
 var UplinkSimpleServer = require("nexus-uplink-simple-server");
+var DirtyMarker = UplinkSimpleServer.DirtyMarker;
+
 
 var chatUtils = require("./chatUtils");
 
@@ -18,9 +20,19 @@ module.exports = function () {
     app: express().use(cors()) });
 
   var MESSAGE_LIST_MAX_LENGTH = chatUtils.MESSAGE_LIST_MAX_LENGTH;
-  var UPDATE_THROTTLE = 100;
-  var userList = {};
-  var messageList = [];
+  var UPDATE_INTERVAL = 100;
+  var dirty = new DirtyMarker();
+  var store = {
+    "/userList": {},
+    "/messageList": [] };
+
+  function update() {
+    dirty.flush().forEach(function (path) {
+      return uplink.update({ path: path, value: store[path] });
+    });
+  }
+
+  setInterval(update, UPDATE_INTERVAL);
 
   function catchAll(fn) {
     return function () {
@@ -32,44 +44,26 @@ module.exports = function () {
     };
   }
 
-  function render() {
-    return {
-      "/userList": userList,
-      "/messageList": messageList };
-  }
-
-  var prevHash = _.hash({});
-  function update() {
-    var next = render();
-    var nextHash = _.hash(next);
-    if (nextHash !== prevHash) {
-      Object.keys(next).forEach(function (path) {
-        return uplink.update({ path: path, value: next[path] });
-      });
-    }
-    prevHash = nextHash;
-  }
-
-  setInterval(update, UPDATE_THROTTLE);
-
   function userJoin(_ref) {
     var guid = _ref.guid;
     guid.should.be.a.String;
     var defaultNickname = _.uniqueId("Anonymous");
-    userList[chatUtils.userId(guid)] = defaultNickname;
+    store["/userList"][chatUtils.userId(guid)] = defaultNickname;
     _.dev(function () {
-      return console.log("userList[" + chatUtils.userId(guid) + "] <- " + defaultNickname);
+      return console.log("store['/userList'][" + chatUtils.userId(guid) + "] <- " + defaultNickname);
     });
     postMessage({ guid: guid, message: "Hello, I'm " + defaultNickname + "." });
+    dirty.mark("/userList");
   }
 
   function userLeave(_ref2) {
     var guid = _ref2.guid;
     guid.should.be.a.String;
     _.dev(function () {
-      return console.log("userList[" + chatUtils.userId(guid) + "] <- void 0");
+      return console.log("store['/userList'][" + chatUtils.userId(guid) + "] <- void 0");
     });
-    delete userList[chatUtils.userId(guid)];
+    delete store["/userList"][chatUtils.userId(guid)];
+    dirty.mark("/userList");
   }
 
   function setNickname(_ref3) {
@@ -79,9 +73,10 @@ module.exports = function () {
     nickname.should.be.a.String;
     nickname.length.should.be.within(3, 24);
     _.dev(function () {
-      return console.log("userList[" + chatUtils.userId(guid) + "] <- " + nickname);
+      return console.log("store['/userList'][" + chatUtils.userId(guid) + "] <- " + nickname);
     });
-    userList[chatUtils.userId(guid)] = nickname;
+    store["/userList"][chatUtils.userId(guid)] = nickname;
+    dirty.mark("/userList");
   }
 
   function postMessage(_ref4) {
@@ -89,19 +84,20 @@ module.exports = function () {
     var message = _ref4.message;
     message.should.be.a.String;
     message.length.should.be.within(1, 256);
-    messageList.push({
+    store["/messageList"].push({
       key: chatUtils.messageId(),
       timestamp: Date.now(),
-      nickname: userList[chatUtils.userId(guid)],
+      nickname: store["/userList"][chatUtils.userId(guid)],
       userId: chatUtils.userId(guid),
       message: message
     });
     _.dev(function () {
-      return console.log("userList[" + chatUtils.userId(guid) + "] -> " + message);
+      return console.log("store['/userList'][" + chatUtils.userId(guid) + "] -> " + message);
     });
-    while (messageList.length > MESSAGE_LIST_MAX_LENGTH) {
-      messageList.shift();
+    while (store["/messageList"].length > MESSAGE_LIST_MAX_LENGTH) {
+      store["/messageList"].shift();
     }
+    dirty.mark("/messageList");
   }
 
   uplink.events.on("create", catchAll(userJoin));
