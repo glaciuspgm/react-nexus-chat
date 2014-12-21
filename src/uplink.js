@@ -3,6 +3,7 @@ const _ = R._;
 const cors = require('cors');
 const express = require('express');
 const UplinkSimpleServer = require('nexus-uplink-simple-server');
+const { DirtyMarker } = UplinkSimpleServer;
 
 const chatUtils = require('./chatUtils');
 
@@ -23,9 +24,18 @@ module.exports = () => {
     });
 
     const { MESSAGE_LIST_MAX_LENGTH } = chatUtils;
-    const UPDATE_THROTTLE = 100;
-    const userList = {};
-    const messageList = [];
+    const UPDATE_INTERVAL = 100;
+    const dirty = new DirtyMarker();
+    const store = {
+      '/userList': {},
+      '/messageList': [],
+    };
+
+    function update() {
+      dirty.flush().forEach((path) => uplink.update({ path, value: store[path] }));
+    }
+
+    setInterval(update, UPDATE_INTERVAL);
 
     function catchAll(fn) {
       return function() {
@@ -38,61 +48,46 @@ module.exports = () => {
       };
     }
 
-    function render() {
-      return {
-        '/userList': userList,
-        '/messageList': messageList,
-      };
-    }
-
-    let prevHash = _.hash({});
-    function update() {
-      const next = render();
-      const nextHash = _.hash(next);
-      if(nextHash !== prevHash) {
-        Object.keys(next).forEach((path) => uplink.update({ path, value: next[path] }));
-      }
-      prevHash = nextHash;
-    }
-
-    setInterval(update, UPDATE_THROTTLE);
-
     function userJoin({ guid }) {
       guid.should.be.a.String;
       const defaultNickname = _.uniqueId('Anonymous');
-      userList[chatUtils.userId(guid)] = defaultNickname;
-      _.dev(() => console.log(`userList[${chatUtils.userId(guid)}] <- ${defaultNickname}`));
+      store['/userList'][chatUtils.userId(guid)] = defaultNickname;
+      _.dev(() => console.log(`store['/userList'][${chatUtils.userId(guid)}] <- ${defaultNickname}`));
       postMessage({ guid, message: `Hello, I'm ${defaultNickname}.`});
+      dirty.mark('/userList');
     }
 
     function userLeave({ guid }) {
       guid.should.be.a.String;
-      _.dev(() => console.log(`userList[${chatUtils.userId(guid)}] <- void 0`));
-      delete userList[chatUtils.userId(guid)];
+      _.dev(() => console.log(`store['/userList'][${chatUtils.userId(guid)}] <- void 0`));
+      delete store['/userList'][chatUtils.userId(guid)];
+      dirty.mark('/userList');
     }
 
     function setNickname({ guid, nickname }) {
       guid.should.be.a.String;
       nickname.should.be.a.String;
       nickname.length.should.be.within(3, 24);
-      _.dev(() => console.log(`userList[${chatUtils.userId(guid)}] <- ${nickname}`));
-      userList[chatUtils.userId(guid)] = nickname;
+      _.dev(() => console.log(`store['/userList'][${chatUtils.userId(guid)}] <- ${nickname}`));
+      store['/userList'][chatUtils.userId(guid)] = nickname;
+      dirty.mark('/userList');
     }
 
     function postMessage({ guid, message }) {
       message.should.be.a.String;
       message.length.should.be.within(1, 256);
-      messageList.push({
+      store['/messageList'].push({
         key: chatUtils.messageId(),
         timestamp: Date.now(),
-        nickname: userList[chatUtils.userId(guid)],
+        nickname: store['/userList'][chatUtils.userId(guid)],
         userId: chatUtils.userId(guid),
         message
       });
-      _.dev(() => console.log(`userList[${chatUtils.userId(guid)}] -> ${message}`));
-      while(messageList.length > MESSAGE_LIST_MAX_LENGTH) {
-        messageList.shift();
+      _.dev(() => console.log(`store['/userList'][${chatUtils.userId(guid)}] -> ${message}`));
+      while(store['/messageList'].length > MESSAGE_LIST_MAX_LENGTH) {
+        store['/messageList'].shift();
       }
+      dirty.mark('/messageList');
     }
 
     uplink.events.on('create', catchAll(userJoin));
