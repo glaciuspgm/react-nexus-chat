@@ -32,7 +32,7 @@ module.exports = () => {
     };
 
     function update() {
-      dirty.flush().forEach((path) => uplink.update({ path, value: store[path] }));
+      dirty.flush().forEach((path) => uplink.update({ path, value: _.clone(store[path]) }));
     }
 
     setInterval(update, UPDATE_INTERVAL);

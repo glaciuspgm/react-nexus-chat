@@ -28,7 +28,7 @@ module.exports = function () {
 
   function update() {
     dirty.flush().forEach(function (path) {
-      return uplink.update({ path: path, value: store[path] });
+      return uplink.update({ path: path, value: _.clone(store[path]) });
     });
   }
 
