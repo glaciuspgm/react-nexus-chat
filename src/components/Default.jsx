@@ -1,8 +1,10 @@
 import { React } from 'react-nexus';
 
 const Default = React.createClass({
+  mixins: [React.addons.PureRenderMixin],
+
   render() {
-    return <div>Default</div>;
+    return <div>Page not found.</div>;
   },
 });
 

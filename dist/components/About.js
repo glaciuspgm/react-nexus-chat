@@ -21,7 +21,7 @@ var About = React.createClass({
     return React.createElement(
       "div",
       null,
-      "About"
+      "React Nexus Chat is a simple demo chat room using React Nexus, Nexus Flux and Nexus Flux socket.io adapter."
     );
   } });
 

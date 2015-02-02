@@ -1,30 +1,56 @@
 import RemoteFluxServer from 'nexus-flux-socket.io/server';
-import { flux } from './config';
+import { flux, app } from './config';
 
 const { port } = flux;
+const { heartbeat, nicknameLength, messageLength } = app;
 const server = new RemoteFluxServer(port);
 
 // Stores
-const info = server.Store('/info', server.lifespan);
-info
-  .set('name', 'React Nexus App')
-  .set('clock', Date.now())
-  .set('connected', 0)
-.commit();
-
-const clicks = server.Store('/clicks', server.lifespan);
-clicks
-  .set('count', 0)
-.commit();
+const nicknames = server.Store('/nicknames', server.lifespan);
+const messages = server.Store('/messages', server.lifespan);
+let hearbeats = {};
 
 // Actions
-server.Action('/clicks/increase', server.lifespan)
-.onDispatch(() => clicks.set('count', clicks.working.get('count') + 1).commit());
+server.Action('/setNickname', server.lifespan)
+.onDispatch(({ nickname }, clientHash) => {
+  if(!nickname || !_.isString(nickname) || nickname.length > nicknameLength) {
+    return;
+  }
+  hearbeats[clientHash] = Date.now();
+  nicknames.set(clientHash, nickname).commit();
+});
 
-server.on('link:add', () => info.set('connected', info.working.get('connected') + 1).commit(), server.lifespan)
-.on('link:remove', () => info.set('connected', info.working.get('connected') - 1).commit(), server.lifespan);
+server.Action('/postMessage', server.lifespan)
+.onDispatch(({ message }, clientHash) => {
+  if(!message || !_.isString(message) || message.length > messageLength) {
+    return;
+  }
+  const nickname = nicknames.get(clientHash);
+  if(!nickname) {
+    return;
+  }
+  const date = Date.now();
+  messages.set(_.uniqueId('m'), { date, nickname, message })
+  .commit();
+});
 
-// Background jobs
-server.lifespan.setInterval(() => info.set('clock', Date.now()).commit(), 187);
+server.Action('/heartbeat', server.lifespan)
+.onDispatch((params, clientHash) => {
+  hearbeats[clientHash] = Date.now();
+});
+
+// Periodically expire nicknames
+server.lifespan.setInterval(() => {
+  nicknames.working.forEach((nickname, clientHash) => {
+    if(hearbeats[clientHash] === void 0) {
+      nicknames.unset(clientHash);
+    }
+  });
+  hearbeats = {};
+  if(nicknames.dirty) {
+    nicknames.commit();
+  }
+}, heartbeat);
 
 console.log('flux-server listening on port', port);
+

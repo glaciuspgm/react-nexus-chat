@@ -23,7 +23,7 @@ var router = new Router();
 [
 // patterns are matched from top to bottom.
 // pattern      title         description
-["/", "Home", "The homepage of my application"], ["/about", "About", "Where I explain what my application does"], ["/contact", "Contact", "You can contact us here"], ["(.*)", "Not found", "Page not found"]].forEach(function (_ref) {
+["/", "Chat room", "React Nexus Chat Room"], ["/about", "About", "What is React Nexus Chat?"], ["(.*)", "Not found", "Page not found"]].forEach(function (_ref) {
   var _ref2 = _slicedToArray(_ref, 3);
 
   var pattern = _ref2[0];

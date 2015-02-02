@@ -3,7 +3,7 @@ import Lifespan from 'lifespan';
 const { React } = Nexus;
 
 const Link = React.createClass({
-  mixins: [Nexus.Mixin, Lifespan.Mixin],
+  mixins: [Nexus.Mixin, Lifespan.Mixin, React.addons.PureRenderMixin],
 
   _navigate: null,
 

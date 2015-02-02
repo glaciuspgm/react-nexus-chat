@@ -21,7 +21,7 @@ var Default = React.createClass({
     return React.createElement(
       "div",
       null,
-      "Default"
+      "Page not found."
     );
   } });
 
