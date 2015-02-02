@@ -15,10 +15,10 @@ const NicknameInput = React.createClass({
     };
   },
 
-  _setNickname: null,
+  setNicknameAction: null,
 
   componentDidMount() {
-    this._setNickname = this.getNexus().remote.Action('/setNickname', this.getLifespan());
+    this.setNicknameAction = this.getNexus().remote.Action('/setNickname', this.getLifespan());
   },
 
   updateInput(ev) {

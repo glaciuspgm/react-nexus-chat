@@ -23,6 +23,8 @@ const App = React.createClass({
 
     return <div>
       <h1>React Nexus Chat</h1>
+      <h2>{ title }</h2>
+      <h3>{ description }</h3>
       <Nav />
       {
         title === 'Chat room' ? <ChatRoom /> :

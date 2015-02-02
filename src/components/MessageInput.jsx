@@ -1,5 +1,6 @@
 import Nexus from 'react-nexus';
 const { React } = Nexus;
+import Lifespan from 'lifespan';
 
 import { app } from '../config';
 const { messageLength } = app;
@@ -16,13 +17,15 @@ const MessageInput = React.createClass({
     };
   },
 
+  postMessageAction: null,
+
   componentDidMount() {
-    this._postMessage = this.getNexus().remote.Action('/postMessage', this.getLifespan());
+    this.postMessageAction = this.getNexus().remote.Action('/postMessage', this.getLifespan());
   },
 
   submitForm(ev) {
     ev.preventDefault();
-    this._postMessage.dispatch({ message: this.state.input });
+    this.postMessageAction.dispatch({ message: this.state.input });
     this.setState({ input: '' });
   },
 
@@ -38,8 +41,8 @@ const MessageInput = React.createClass({
     return <form className='MessageInput' onSubmit={this.submitForm}>
       <label>{this.props.nickname}</label>
       <input type='text' onChange={this.updateInput} value={this.state.input} />
-    </form>
-  }
+    </form>;
+  },
 });
 
 export default MessageInput;

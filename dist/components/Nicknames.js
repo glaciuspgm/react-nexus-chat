@@ -16,32 +16,31 @@ if (__DEV__) {
 }
 var Nexus = _interopRequire(require("react-nexus"));
 
-var Lifespan = _interopRequire(require("lifespan"));
-
 var React = Nexus.React;
 
 
-var Link = React.createClass({
-  displayName: "Link",
-  mixins: [Nexus.Mixin, Lifespan.Mixin, React.addons.PureRenderMixin],
-
-  _navigate: null,
-
-  componentDidMount: function componentDidMount() {
-    this._navigate = this.getNexus().local.Action("/router/navigate", this.getLifespan());
-  },
-
-  followLink: function followLink(ev) {
-    ev.preventDefault();
-    this._navigate.dispatch({ url: this.props.href });
-  },
+var Nicknames = React.createClass({
+  displayName: "Nicknames",
+  mixins: [React.addons.PureRenderMixin],
+  propTypes: {
+    nicknames: React.PropTypes.isRequired },
 
   render: function render() {
+    var nicknames = this.props.nicknames;
     return React.createElement(
-      "a",
-      { href: this.props.href, onClick: this.followLink },
-      this.props.children
+      "ul",
+      { className: "Nicknames" },
+      nicknames ? nicknames.sort(function (a, b) {
+        return a.localCompare(b);
+      }).map(function (nickname, key) {
+        return React.createElement(
+          "li",
+          { key: key },
+          nickname
+        );
+      }).toArray() : null
     );
-  } });
+  }
+});
 
-module.exports = Link;
+module.exports = Nicknames;

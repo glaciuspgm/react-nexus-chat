@@ -17,6 +17,8 @@ var React = require("react-nexus").React;
 
 var Default = React.createClass({
   displayName: "Default",
+  mixins: [React.addons.PureRenderMixin],
+
   render: function render() {
     return React.createElement(
       "div",

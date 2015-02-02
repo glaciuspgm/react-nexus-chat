@@ -10,8 +10,9 @@ const Message = React.createClass({
   },
 
   render() {
-    const date = new Date(this.props.date);
-    const [h, m, s] = [date.getHours(), date.getMinutes(), date.getSeconds()];
+    const { message, nickname, date } = this.props;
+    const d = new Date(date);
+    const [h, m, s] = [d.getHours(), d.getMinutes(), d.getSeconds()];
     return <div className='Message'>
       <span className='Message-nickname'>{nickname}</span>
       (<span class='Message-date'>{h}:{m}:{s}</span>)

@@ -1,7 +1,12 @@
 import Nexus from 'react-nexus';
 const { React } = Nexus;
 import Lifespan from 'lifespan';
+
 import { app } from '../config';
+import Messages from './Messages';
+import NicknameInput from './NicknameInput';
+import MessageInput from './MessageInput';
+import Nicknames from './Nicknames';
 
 const { heartbeat } = app;
 
@@ -17,8 +22,8 @@ const ChatRoom = React.createClass({
 
   componentDidMount() {
     const lifespan = this.getLifespan();
-    const heartbeat = remote.Action('/heartbeat', lifespan);
-    lifespan.setInterval(() => heartbeat.dispatch({}), heartbeat);
+    const heartbeatAction = this.getNexus().remote.Action('/heartbeat', lifespan);
+    lifespan.setInterval(() => heartbeatAction.dispatch({}), heartbeat);
   },
 
   render() {

@@ -25,6 +25,7 @@ var gwebpack = require('gulp-webpack');
 var jshint = require('gulp-jshint');
 var plumber = require('gulp-plumber');
 var prepend = require('gulp-insert').prepend;
+var react = require('gulp-react');
 var rename = require('gulp-rename');
 var sourcemaps = require('gulp-sourcemaps');
 var styles = require('gulp-react-statics-styles');
@@ -39,8 +40,9 @@ function clean(fn) {
 }
 
 function lint() {
-  return gulp.src(['src/**/*.js', '!src/public/**/*.js'])
+  return gulp.src(['src/**/*.js', 'src/**/*.jsx', '!src/public/**/*.js'])
   .pipe(plumber())
+  .pipe(react())
   .pipe(jshint())
   .pipe(jshint.reporter(stylish));
 }

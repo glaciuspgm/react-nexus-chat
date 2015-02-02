@@ -19,6 +19,8 @@ var Link = _interopRequire(require("./Link"));
 
 var Nav = React.createClass({
   displayName: "Nav",
+  mixins: [React.addons.PureRenderMixin],
+
   render: function render() {
     return React.createElement(
       "ul",

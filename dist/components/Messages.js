@@ -16,32 +16,30 @@ if (__DEV__) {
 }
 var Nexus = _interopRequire(require("react-nexus"));
 
-var Lifespan = _interopRequire(require("lifespan"));
-
 var React = Nexus.React;
+var Message = _interopRequire(require("./Message"));
 
-
-var Link = React.createClass({
-  displayName: "Link",
-  mixins: [Nexus.Mixin, Lifespan.Mixin, React.addons.PureRenderMixin],
-
-  _navigate: null,
-
-  componentDidMount: function componentDidMount() {
-    this._navigate = this.getNexus().local.Action("/router/navigate", this.getLifespan());
-  },
-
-  followLink: function followLink(ev) {
-    ev.preventDefault();
-    this._navigate.dispatch({ url: this.props.href });
-  },
+var Messages = React.createClass({
+  displayName: "Messages",
+  mixins: [React.addons.PureRenderMixin],
+  propTypes: {
+    messages: React.PropTypes.isRequired },
 
   render: function render() {
+    var messages = this.props.messages;
     return React.createElement(
-      "a",
-      { href: this.props.href, onClick: this.followLink },
-      this.props.children
+      "ul",
+      { className: "Messages" },
+      "( messages ? messages.map((",
+      (message, nickname, date),
+      ", key) =>",
+      React.createElement(
+        "li",
+        { key: key },
+        React.createElement(Message, { message: message, nickname: nickname, date: date })
+      ),
+      ").toArray() : null }"
     );
   } });
 
-module.exports = Link;
+module.exports = Messages;

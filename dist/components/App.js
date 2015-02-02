@@ -29,7 +29,7 @@ var Default = _interopRequire(require("./Default"));
 
 var App = React.createClass({
   displayName: "App",
-  mixins: [Nexus.Mixin],
+  mixins: [Nexus.Mixin, React.addons.PureRenderMixin],
 
   getNexusBindings: function getNexusBindings() {
     return {
@@ -51,6 +51,16 @@ var App = React.createClass({
         "h1",
         null,
         "React Nexus Chat"
+      ),
+      React.createElement(
+        "h2",
+        null,
+        title
+      ),
+      React.createElement(
+        "h3",
+        null,
+        description
       ),
       React.createElement(Nav, null),
       title === "Chat room" ? React.createElement(ChatRoom, null) : title === "About" ? React.createElement(About, null) : React.createElement(Default, null),
