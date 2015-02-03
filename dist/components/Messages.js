@@ -23,7 +23,7 @@ var Messages = React.createClass({
   displayName: "Messages",
   mixins: [React.addons.PureRenderMixin],
   propTypes: {
-    messages: React.PropTypes.isRequired },
+    messages: React.PropTypes.array.isRequired },
 
   render: function render() {
     var messages = this.props.messages;
@@ -38,7 +38,7 @@ var Messages = React.createClass({
         { key: key },
         React.createElement(Message, { message: message, nickname: nickname, date: date })
       ),
-      ").toArray() : null }"
+      ") : null }"
     );
   } });
 

@@ -4,7 +4,7 @@ const { React } = Nexus;
 const Nicknames = React.createClass({
   mixins: [React.addons.PureRenderMixin],
   propTypes: {
-    nicknames: React.PropTypes.isRequired,
+    nicknames: React.PropTypes.array.isRequired,
   },
 
   render() {
@@ -12,7 +12,7 @@ const Nicknames = React.createClass({
     return <ul className='Nicknames'>
       { nicknames ? nicknames.sort((a, b) => a.localCompare(b)).map((nickname, key) =>
         <li key={key}>{ nickname }</li>
-      ).toArray() : null }
+      ): null }
     </ul>;
   }
 });

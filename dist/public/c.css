@@ -1,0 +1,32 @@
+/* @react-statics-styles App */
+* {
+  box-sizing: border-box;
+}
+
+/* @react-statics-styles ChatRoom */
+.ChatRoom {
+  display: block;
+}
+
+.ChatRoom-column {
+  display: inline-block;
+}
+
+.ChatRoom-leftColumn {
+  width: 70%;
+}
+
+.ChatRoom-rightColumn {
+  width: 30%;
+}
+
+/* @react-statics-styles Nav */
+.Nav {
+  padding: 5px;
+}
+
+.Nav > li {
+  display: inline-block;
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImRpc3QvY29tcG9uZW50cy9BcHAuY3NzIiwiZGlzdC9jb21wb25lbnRzL0NoYXRSb29tLmNzcyIsImRpc3QvY29tcG9uZW50cy9OYXYuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLGdDQUFBO0FBQ0E7RUFDQSx3QkFBQTtFQUNBOztBQ0hBLHFDQUFBO0FBQ0E7RUFDQSxnQkFBQTtFQUNBO0FBQ0E7RUFDQSx1QkFBQTtFQUNBO0FBQ0E7RUFDQSxZQUFBO0VBQ0E7QUFDQTtFQUNBLFlBQUE7RUFDQTs7QUNaQSxnQ0FBQTtBQUNBO0VBQ0EsY0FBQTtFQUNBO0FBQ0E7RUFDQSx1QkFBQTtFQUNBIiwiZmlsZSI6ImMuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLyogQHJlYWN0LXN0YXRpY3Mtc3R5bGVzIEFwcCAqL1xuKiB7XG4gIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG59XG4iLCIvKiBAcmVhY3Qtc3RhdGljcy1zdHlsZXMgQ2hhdFJvb20gKi9cbi5DaGF0Um9vbSB7XG4gIGRpc3BsYXk6IGJsb2NrO1xufVxuLkNoYXRSb29tLWNvbHVtbiB7XG4gIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbn1cbi5DaGF0Um9vbS1sZWZ0Q29sdW1uIHtcbiAgd2lkdGg6IDcwJTtcbn1cbi5DaGF0Um9vbS1yaWdodENvbHVtbiB7XG4gIHdpZHRoOiAzMCU7XG59XG4iLCIvKiBAcmVhY3Qtc3RhdGljcy1zdHlsZXMgTmF2ICovXG4uTmF2IHtcbiAgcGFkZGluZzogNXB4O1xufVxuLk5hdiA+IGxpIHtcbiAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xufVxuIl0sInNvdXJjZVJvb3QiOiIvc291cmNlLyJ9 */

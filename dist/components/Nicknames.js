@@ -23,7 +23,7 @@ var Nicknames = React.createClass({
   displayName: "Nicknames",
   mixins: [React.addons.PureRenderMixin],
   propTypes: {
-    nicknames: React.PropTypes.isRequired },
+    nicknames: React.PropTypes.array.isRequired },
 
   render: function render() {
     var nicknames = this.props.nicknames;
@@ -38,7 +38,7 @@ var Nicknames = React.createClass({
           { key: key },
           nickname
         );
-      }).toArray() : null
+      }) : null
     );
   }
 });

@@ -15,7 +15,8 @@ express()
 .use(favicon(__dirname + '/public/favicon.ico'))
 .use(express.static(__dirname + '/public'))
 .get('*', (req, res) => {
-  const clientID = _.uniqueId(`Client${_.random(1, INT_MAX - 1)}`);
+  // Allow client to specify a clientID via querystring parameter __clientID, eg. for PHP-cURL calls
+  const clientID = req.query.__clientID || _.uniqueId(`Client${_.random(1, INT_MAX - 1)}`);
   const lifespan = new Lifespan();
   const nexus = App.createNexus({ req }, clientID, lifespan);
   Nexus.prerenderApp(<App nexus={nexus} />, nexus) // pass nexus as a prop to make it visible in the devtools

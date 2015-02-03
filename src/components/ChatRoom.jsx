@@ -32,14 +32,14 @@ const ChatRoom = React.createClass({
     return <div className='ChatRoom'>
       <div className='ChatRoom-column ChatRoom-leftColumn'>
         <div>
-          <Messages messages={messages} />
+          <Messages messages={messages.toArray()} />
         </div>
         <div>
           { myNickname ? <NicknameInput /> : <MessageInput nickname={myNickname} /> }
         </div>
       </div>
       <div className='ChatRoom-column ChatRoom-rightColumn'>
-        <Nicknames nicknames={nicknames} />
+        <Nicknames nicknames={nicknames.toArray()} />
       </div>
     </div>;
   },

@@ -6,7 +6,7 @@ import Message from './Message';
 const Messages = React.createClass({
   mixins: [React.addons.PureRenderMixin],
   propTypes: {
-    messages: React.PropTypes.isRequired,
+    messages: React.PropTypes.array.isRequired,
   },
 
   render() {
@@ -16,7 +16,7 @@ const Messages = React.createClass({
         <li key={key}>
           <Message message={message} nickname={nickname} date={date} />
         </li>
-      ).toArray() : null }
+      ) : null }
     </ul>;
   },
 });

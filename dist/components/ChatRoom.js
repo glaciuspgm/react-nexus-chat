@@ -62,7 +62,7 @@ var ChatRoom = React.createClass({
         React.createElement(
           "div",
           null,
-          React.createElement(Messages, { messages: messages })
+          React.createElement(Messages, { messages: messages.toArray() })
         ),
         React.createElement(
           "div",
@@ -73,7 +73,7 @@ var ChatRoom = React.createClass({
       React.createElement(
         "div",
         { className: "ChatRoom-column ChatRoom-rightColumn" },
-        React.createElement(Nicknames, { nicknames: nicknames })
+        React.createElement(Nicknames, { nicknames: nicknames.toArray() })
       )
     );
   },

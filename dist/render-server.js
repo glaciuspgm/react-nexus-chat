@@ -37,7 +37,8 @@ var port = render.port;
 var INT_MAX = 9007199254740992;
 
 express().use(favicon(__dirname + "/public/favicon.ico")).use(express["static"](__dirname + "/public")).get("*", function (req, res) {
-  var clientID = _.uniqueId("Client" + _.random(1, INT_MAX - 1));
+  // Allow client to specify a clientID via querystring parameter __clientID, eg. for PHP-cURL calls
+  var clientID = req.query.__clientID || _.uniqueId("Client" + _.random(1, INT_MAX - 1));
   var lifespan = new Lifespan();
   var nexus = App.createNexus({ req: req }, clientID, lifespan);
   Nexus.prerenderApp(React.createElement(App, { nexus: nexus }), nexus) // pass nexus as a prop to make it visible in the devtools
