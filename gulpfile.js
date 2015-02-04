@@ -18,18 +18,16 @@ var cssmqpacker  = require('css-mqpacker');
 var csswring = require('csswring');
 var del = require('del');
 var es6to5 = require('gulp-6to5');
+var eslint = require('gulp-eslint');
 var fs = require('fs');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var gwebpack = require('gulp-webpack');
-var jshint = require('gulp-jshint');
 var plumber = require('gulp-plumber');
 var prepend = require('gulp-insert').prepend;
-var react = require('gulp-react');
 var rename = require('gulp-rename');
 var sourcemaps = require('gulp-sourcemaps');
 var styles = require('gulp-react-statics-styles');
-var stylish = require('jshint-stylish');
 var webpack = require('webpack');
 var uglify = require('gulp-uglify');
 
@@ -42,9 +40,8 @@ function clean(fn) {
 function lint() {
   return gulp.src(['src/**/*.js', 'src/**/*.jsx', '!src/public/**/*.js'])
   .pipe(plumber())
-  .pipe(react())
-  .pipe(jshint())
-  .pipe(jshint.reporter(stylish));
+  .pipe(eslint())
+  .pipe(eslint.format());
 }
 
 function build() {
